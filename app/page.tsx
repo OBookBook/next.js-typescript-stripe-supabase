@@ -9,7 +9,7 @@ export default async function Home() {
   if (error) console.error(error);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="w-full max-w-3xl mx-auto my-16 px-2">
       {lessons?.map((lesson) => (
         <Link href={`/${lesson.id}/`} key={lesson.id}>
           {lesson.title}
