@@ -3,11 +3,24 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default async function Home() {
-  const supabase = createServerComponentClient({ cookies });
+const supabase = createServerComponentClient({ cookies });
+const getAllLessons = async () => {
   const { data: lessons, error } = await supabase.from("lesson").select("*");
+  if (error) throw new Error(error.message);
 
-  if (error) console.error(error);
+  return lessons;
+};
+
+export default async function Home() {
+  let lessons;
+  try {
+    lessons = await getAllLessons();
+  } catch (error) {
+    console.error(error);
+    const errorMessage = (error as Error).message || "エラーが発生しました";
+
+    return <div>エラーが発生しました: {errorMessage}</div>;
+  }
 
   return (
     <main className="w-full max-w-3xl mx-auto my-16 px-2">
