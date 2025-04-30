@@ -7,5 +7,8 @@
   - RLS
 
 - prsima
+
   - npx prisma generate
   - npx prisma db push
+
+  - npm run prisma:seed
