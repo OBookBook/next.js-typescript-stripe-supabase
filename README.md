@@ -10,6 +10,8 @@
       - npx supabase login
       - npx supabase gen types typescript --project-id "$PROJECT_REF" > lib/database.types.ts
         - ※ projectID ➡ https://supabase.com/dashboard/project/"$PROJECT_REF"/settings/general
+  - Supabase Authentication OAuth 認証(GitHub)
+    - https://github.com/OBookBook/next.js-typescript-stripe-supabase/issues/1
 
 - prsima
 
