@@ -2,8 +2,9 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers"; // cookieを使用すると、SSR になる。※ デフォルトはSSG
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Database } from "@/lib/database.types";
 
-const supabase = createServerComponentClient({ cookies });
+const supabase = createServerComponentClient<Database>({ cookies });
 const getAllLessons = async () => {
   const { data: lessons, error } = await supabase.from("lesson").select("*");
   if (error) throw new Error(error.message);
