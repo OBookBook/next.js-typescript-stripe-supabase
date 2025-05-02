@@ -15,3 +15,13 @@ model lesson {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model profile {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  is_subscribed Boolean  @default(false)
+  interval      String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // @@shema("auth") とのリレーションは、supabase上でやった。
+}
