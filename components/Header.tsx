@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
+import AuthServerButton from "./auth/AuthServerButton";
 
 const Header = () => {
   return (
@@ -10,9 +11,9 @@ const Header = () => {
       <Link href="/pricing" className="ml-4">
         <Button variant="outline">price</Button>
       </Link>
-      <Link href="/login" className="ml-auto">
-        <Button>login</Button>
-      </Link>
+      <div className="ml-auto">
+        <AuthServerButton />
+      </div>
     </header>
   );
 };
