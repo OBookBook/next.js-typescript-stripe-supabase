@@ -19,3 +19,10 @@
   - npx prisma db push
 
   - npm run prisma:seed
+
+- generate 32 byte
+
+  - node -e "console.log(crypto.randomBytes(32).toString('hex'))"
+
+- Error Tips
+  - https://github.com/prisma/prisma/discussions/22091
