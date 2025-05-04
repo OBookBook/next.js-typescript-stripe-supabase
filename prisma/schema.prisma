@@ -23,6 +23,7 @@ model profile {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   stripe_customer String?
+  email           String?
 
   // @@shema("auth") とのリレーションは、supabase上でやった。
 }
