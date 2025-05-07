@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Button } from "@/components/ui/button";
 
 const SubscriptionButton = ({ planId }: { planId: string }) => {
@@ -8,7 +7,6 @@ const SubscriptionButton = ({ planId }: { planId: string }) => {
     const response = await fetch(
       `http://localhost:3000/api/subscription/${planId}`
     );
-    const json = await response.json();
   };
 
   return (
