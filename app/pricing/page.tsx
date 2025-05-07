@@ -7,34 +7,52 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import initStripe from "stripe";
 
-const PricingPage = () => {
+const getAllPlans = async () => {
+  const stripe = new initStripe(process.env.STRIPE_SECRET_KEY!);
+  const { data: plansList } = await stripe.plans.list();
+
+  const plans = await Promise.all(
+    plansList.map(async (plan) => {
+      const product = await stripe.products.retrieve(plan.product as string);
+
+      return {
+        id: plan.id,
+        name: product.name,
+        price: plan.amount_decimal,
+        interval: plan.interval,
+        currency: plan.currency,
+      };
+    })
+  );
+
+  const sortedPlans = plans.sort((a, b) => a.price! - b.price!);
+
+  return sortedPlans;
+};
+
+const PricingPage = async () => {
+  const plans = await getAllPlans();
+
   return (
     <div className="w-full max-w-3xl mx-auto py-16 flex justify-around ">
-      <Card className="shadow-md">
-        <CardHeader>
-          <CardTitle>月額プラン</CardTitle>
-          <CardDescription>Month</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>2,500円 / 月</p>
-        </CardContent>
-        <CardFooter>
-          <Button>サブスクリプション契約する</Button>
-        </CardFooter>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>年額プラン</CardTitle>
-          <CardDescription>Year</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>20,000円 / 年</p>
-        </CardContent>
-        <CardFooter>
-          <Button>サブスクリプション契約する</Button>
-        </CardFooter>
-      </Card>
+      {plans.map((plan) => (
+        <Card className="shadow-md" key={plan.id}>
+          <CardHeader>
+            <CardTitle>{plan.name} プラン</CardTitle>
+            <CardDescription>{plan.name}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p>
+              {plan.price} / {plan.interval}
+            </p>
+          </CardContent>
+          <CardFooter>
+            <Button>サブスクリプション契約する</Button>
+          </CardFooter>
+        </Card>
+      ))}
     </div>
   );
 };
