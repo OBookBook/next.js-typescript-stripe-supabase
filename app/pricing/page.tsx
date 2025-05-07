@@ -57,12 +57,14 @@ const PricingPage = async () => {
   const supabase = createServerComponentClient({ cookies });
   const { data: user } = await supabase.auth.getSession();
 
-  const plans = await getAllPlans();
-  const profile = await getProfileData(supabase);
+  const [plans, profile] = await Promise.all([
+    await getAllPlans(),
+    await getProfileData(supabase),
+  ]);
 
-  const showSubscribeButton = !!user.session && !profile.is_subscribed;
+  const showSubscribeButton = !!user.session && !profile?.is_subscribed;
   const showCreateAccountButton = !user.session;
-  const showManageSubscriptionButton = !!user.session && profile.is_subscribed;
+  const showManageSubscriptionButton = !!user.session && profile?.is_subscribed;
 
   return (
     <div className="w-full max-w-3xl mx-auto py-16 flex justify-around ">
