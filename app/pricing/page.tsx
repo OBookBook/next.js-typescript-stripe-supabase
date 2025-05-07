@@ -7,9 +7,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import initStripe from "stripe";
+import initStripe, { Stripe } from "stripe";
 
-const getAllPlans = async () => {
+interface Plan {
+  id: string;
+  name: string;
+  price: string | null;
+  interval: Stripe.Price.Recurring.Interval | null;
+  currency: String;
+}
+
+const getAllPlans = async (): Promise<Plan[]> => {
   const stripe = new initStripe(process.env.STRIPE_SECRET_KEY!);
   const { data: plansList } = await stripe.plans.list();
 
@@ -27,7 +35,9 @@ const getAllPlans = async () => {
     })
   );
 
-  const sortedPlans = plans.sort((a, b) => a.price! - b.price!);
+  const sortedPlans = plans.sort(
+    (a, b) => parseInt(a.price!) - parseInt(b.price!)
+  );
 
   return sortedPlans;
 };
