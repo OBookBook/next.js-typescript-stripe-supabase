@@ -14,6 +14,7 @@ import {
 import initStripe, { Stripe } from "stripe";
 import { cookies } from "next/headers";
 import { Database } from "@/lib/database.types";
+import SubscriptionButton from "@/components/checkout/SubscriptionButton";
 
 interface Plan {
   id: string;
@@ -80,7 +81,7 @@ const PricingPage = async () => {
             </p>
           </CardContent>
           <CardFooter>
-            {showSubscribeButton && <Button>サブスクリプション契約する</Button>}
+            {showSubscribeButton && <SubscriptionButton planId={plan.id} />}
             {showCreateAccountButton && <Button>ログインする</Button>}
             {showManageSubscriptionButton && (
               <Button>サブスクリプション管理する</Button>
