@@ -23,7 +23,7 @@ interface Plan {
   name: string;
   price: string | null;
   interval: Stripe.Price.Recurring.Interval | null;
-  currency: String;
+  currency: string;
 }
 
 const getAllPlans = async (): Promise<Plan[]> => {
