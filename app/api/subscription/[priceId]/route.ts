@@ -3,10 +3,14 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import initStripe from "stripe";
 
+// paramsの型をPromiseに変更
 export async function GET(
   req: NextRequest,
-  { params }: { params: { priceId: string } }
+  { params }: { params: Promise<{ priceId: string }> }
 ) {
+  // paramsを待機して取得
+  const { priceId } = await params;
+
   const supabase = createRouteHandlerClient({ cookies });
   const { data } = await supabase.auth.getUser();
   const user = data.user;
@@ -18,8 +22,6 @@ export async function GET(
     .select("stripe_customer")
     .eq("id", user?.id)
     .single();
-
-  const priceId = params.priceId;
 
   const stripe = new initStripe(process.env.STRIPE_SECRET_KEY!);
   const session = await stripe.checkout.sessions.create({
