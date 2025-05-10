@@ -7,7 +7,7 @@ const SubscriptionManagemntButton = () => {
   const router = useRouter();
 
   const loadPortal = async () => {
-    const response = await fetch("http://localhost:3000/api/portal");
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/portal`);
 
     if (!response.ok) {
       console.error("Error fetching portal URL:", response.statusText);
