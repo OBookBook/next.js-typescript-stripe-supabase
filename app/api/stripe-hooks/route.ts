@@ -62,14 +62,14 @@ export async function POST(req: NextRequest) {
           .from("profile")
           .update({
             is_subscribed: false,
-            interval: null,
+            interval: "null",
           })
           .eq("stripe_customer", event.data.object.customer as string);
         break;
     }
 
     return NextResponse.json({ received: true });
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json(`Webhook Error: ${error.message}`, {
       status: 401,
     });
