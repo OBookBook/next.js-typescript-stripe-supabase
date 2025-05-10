@@ -36,23 +36,34 @@ const getPremiumContent = async (
   return video;
 };
 
-const LessonDetailPage = async ({ params }: { params: { id: number } }) => {
+// パラメータの型定義を変更
+type Params = Promise<{ id: string }>;
+
+const LessonDetailPage = async ({ params }: { params: Params }) => {
   const supabase = createServerComponentClient<Database>({ cookies });
+
+  // paramsを待機して取得
+  const { id } = await params;
+
   const [lesson, video] = await Promise.all([
-    getDetailLesson(params.id, supabase),
-    getPremiumContent(params.id, supabase),
+    getDetailLesson(Number(id), supabase),
+    getPremiumContent(Number(id), supabase),
   ]);
 
-  const videoId = video?.video_url.split("v=")[1];
+  const videoId = video?.video_url?.split("v=")[1];
 
   return (
     <div className="w-full max-w-3xl mx-auto py-16 px-8">
       <h1 className="text-3xl mb-6">{lesson?.title}</h1>
       <p className="mb-8">{lesson?.description}</p>
 
-      <YouTubeEmbed height={400} videoid={videoId} />
+      <YouTubeEmbed height={400} videoid={videoId ?? ""} />
     </div>
   );
 };
+
+export function generateStaticParams() {
+  return [];
+}
 
 export default LessonDetailPage;
